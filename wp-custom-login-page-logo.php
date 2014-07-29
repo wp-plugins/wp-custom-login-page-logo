@@ -116,7 +116,9 @@ function wpclpl_settings_logo_preview() {
 				<img style="max-width:100%;" class="wpclpl-logo-preview" src="<?php echo esc_url( $wpclpl_plugin_options['wpclpl_logo_url'] ); ?>" id="wpclpl-logo-preview" /></a>
 		</div>
 		<p>
-		<?php wpclpl_image_dimensions(); ?>
+		<?php
+		 wpclpl_image_dimensions();
+		 ?>
 		</p>
 		<p>
 			<input class="wpclpl-logo-remove-img-btn button" type="button" value="<?php esc_attr_e('Remove Image','wpclpl'); ?>" />
