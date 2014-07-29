@@ -9,6 +9,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 This Plugin lets you customize the Logo of the admin login page panel. Useful if you need to add a client's logo for personalization. 
+Besides that, you can add a custom text line (like „Welcome, Company XY Admin“) and edit your custom css style.
 
 
 == Description ==
@@ -33,7 +34,7 @@ Currently, there's nothing to answer...
 
 == Screenshots ==
 
-http://wp.larsactionhero.com/?p=158
+http://wp.larsactionhero.com/wp-content/uploads/2014/07/wp-custom-login-page-logo-1.1.png
 
 == Changelog ==
 
