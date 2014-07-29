@@ -20,7 +20,7 @@ Besides that, you can add a custom text line (like â€žWelcome, Company XY Adminâ
 
 1. Download the zip. 
 2. Go to Admin Panel -> Plugins -> Add new.
-3. Upload "wp-custom-admin-logo-1.0.zip" (you can also unzip it and upload it manually to the "/wp-content/plugins/" directory)
+3. Click "Upload" and upload the .zip file (you can also upload the unzipped folder to your "/wp-content/plugins/" directory via FTP)
 4. Activate the plugin through the 'Plugins' menu in WordPress
 5. The Plugin settings appear at Settings -> Custom Login Page Logo.
 
