@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP Custom Login Page Logo
-Plugin URI: http://wp.larsactionhero.com/dev/plugins/custom-login-page-logo
+Plugin URI: http://wp.larsactionhero.com/development/plugins/wp-custom-login-page-logo/
 Description: Customize the admin logo on /wp-admin login page.
 Version: 1.1.0
 Author: Lars Ortlepp
@@ -116,7 +116,9 @@ function wpclpl_settings_logo_preview() {
 				<img style="max-width:100%;" class="wpclpl-logo-preview" src="<?php echo esc_url( $wpclpl_plugin_options['wpclpl_logo_url'] ); ?>" id="wpclpl-logo-preview" /></a>
 		</div>
 		<p>
-		<?php wpclpl_image_dimensions(); ?>
+		<?php
+		 wpclpl_image_dimensions();
+		 ?>
 		</p>
 		<p>
 			<input class="wpclpl-logo-remove-img-btn button" type="button" value="<?php esc_attr_e('Remove Image','wpclpl'); ?>" />
