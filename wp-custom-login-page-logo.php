@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP Custom Login Page Logo
-Plugin URI: http://wp.larsactionhero.com/dev/plugins/custom-login-page-logo
+Plugin URI: http://wp.larsactionhero.com/development/plugins/wp-custom-login-page-logo/
 Description: Customize the admin logo on /wp-admin login page.
 Version: 1.1.0
 Author: Lars Ortlepp
