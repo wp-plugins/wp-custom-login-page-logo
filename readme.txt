@@ -33,7 +33,9 @@ Currently, there's nothing to answer...
 
 == Screenshots ==
 
-/assets/screenshot-1.png
+1. Backend view
+
+2. Customized admin page example
 
 == Changelog ==
 
