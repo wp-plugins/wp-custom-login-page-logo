@@ -33,11 +33,11 @@ Currently, there's nothing to answer...
 
 == Screenshots ==
 
-screenshot-1.png
+/assets/screenshot-1.png
 
 == Changelog ==
 
-= 1.1.3 =
+= 1.1.4 =
 * Modified screenshot info
 
 = 1.1.3 =
