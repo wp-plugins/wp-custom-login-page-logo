@@ -38,6 +38,12 @@ http://wp.larsactionhero.com/wp-content/uploads/2014/07/wp-custom-login-page-log
 
 == Changelog ==
 
+= 1.1.2 = 
+* Minor Changes
+
+= 1.1.1 = 
+* Minor Changes
+
 = 1.1 =
 * Added custom css edit support
 
