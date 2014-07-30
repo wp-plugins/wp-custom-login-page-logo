@@ -4,17 +4,16 @@ Donate link: http://wp.larsactionhero.com/development/plugins/wp-custom-login-pa
 Tags: custom admin logo, admin logo, change admin logo, change login logo, admin login logo, custom login page, add client logo to login page, plugin, wp-admin, login logo
 Requires at least: 3.3
 Tested up to: 3.9.1
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This Plugin lets you customize the Logo of the admin login page panel. Useful if you need to add a client's logo for personalization. 
-Besides that, you can add a custom text line (like 'Welcome, Company XY Admin') and edit your custom css style.
+This Plugin lets you customize the Logo of the admin login page panel. Helpful if you need to add a client's (or yopur own) logo for personalization.
 
 
 == Description ==
-
-
+Customize your admin login page: change the default logo and add your own or your client's logo.
+You also can add a custom text, load a css that is machted to your image's dimensions and edit the css for you needs.
 
 == Installation ==
 
@@ -34,9 +33,18 @@ Currently, there's nothing to answer...
 
 == Screenshots ==
 
-http://wp.larsactionhero.com/wp-content/uploads/2014/07/wp-custom-login-page-logo-1.1.png
+/assets/screenshot-1.png
 
 == Changelog ==
+
+= 1.1.3 =
+* Added screenshot
+
+= 1.1.2 = 
+* Minor changes
+
+= 1.1.1 = 
+* Minor changes
 
 = 1.1 =
 * Added custom css edit support
