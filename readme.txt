@@ -13,7 +13,7 @@ This Plugin lets you customize the Logo of the admin login page panel. Helpful i
 
 == Description ==
 Customize your admin login page: change the default logo and add your own or your client's logo.
-You also can add a custom text, load a css that is machted to your image's dimensions and edit the css for you needs.
+You also can add a custom text, load a css that is matched to your image's dimensions and edit the css for you needs.
 
 == Installation ==
 
