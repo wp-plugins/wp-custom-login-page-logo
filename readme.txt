@@ -8,7 +8,7 @@ Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This Plugin lets you customize the Logo of the admin login page panel. Helpful if you need to add a client's (or yopur own) logo for personalization.
+This Plugin lets you customize the Logo of the admin login page panel. Helpful if you need to add a client's (or your own) logo.
 
 
 == Description ==
