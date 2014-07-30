@@ -1,4 +1,4 @@
-=== WP Custom Admin Logo ===
+=== WP Custom Admin Login Page +Logo ===
 Contributors: Lars Ortlepp
 Donate link: http://wp.larsactionhero.com/development/plugins/wp-custom-login-page-logo/
 Tags: custom admin logo, admin logo, change admin logo, change login logo, admin login logo, custom login page, add client logo to login page, plugin, wp-admin, login logo
