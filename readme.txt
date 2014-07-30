@@ -33,7 +33,7 @@ Currently, there's nothing to answer...
 
 == Screenshots ==
 
-/assets/screenshot-1.png
+screenshot-1.png
 
 == Changelog ==
 
