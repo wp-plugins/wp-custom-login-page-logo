@@ -460,17 +460,7 @@ function wpclpl_custom_login_logo() {
     
     <?php
     // do we have addition text? -------------------------------------
-    if(!empty($wpclpl_additional_text)) {
-
-	// we need jquery here... 
-	if(wp_script_is('jquery')) {
-	   // zzzz...
-	} else {
-	   #wp_enqueue_script('jquery');
-	   wp_enqueue_script('jquery','/wp-includes/js/jquery/jquery.js','','',false);
-	}
-
- ?>
+    if(!empty($wpclpl_additional_text)) { ?>
     
     <script>
     jQuery(function($){
