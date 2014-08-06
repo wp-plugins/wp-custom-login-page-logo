@@ -443,9 +443,6 @@ function wpclpl_custom_login_logo() {
 
 	global $wpclpl_plugin_options;
 
-	// js doesn't like line breaks in strings...
-	$wpclpl_additional_text = str_ireplace(array("\r","\n",'\r','\n'),'', $wpclpl_plugin_options['wpclpl_additional_text']);
-	
 	// do we have an image url? -------------------------------------
 	if( !empty( $wpclpl_plugin_options['wpclpl_logo_url'] ) ){
 		$wpclpl_plugin_logo_url =  esc_url($wpclpl_plugin_options['wpclpl_logo_url']);
@@ -457,7 +454,7 @@ function wpclpl_custom_login_logo() {
 	    <?php echo wpclpl_settings_custom_css(true); ?>
     }
     </style>
-    
+ 
     <?php
 
 	} else {
