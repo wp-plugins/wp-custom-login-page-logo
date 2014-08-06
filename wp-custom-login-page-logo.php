@@ -422,6 +422,11 @@ if($_GET['page'] == "wp-custom-login-page-logo.php"){
 * final html output on admin login page
 ****************************************
 */
+function custom_login_enqueue_scripts(){
+	wp_enqueue_script('jquery');
+}
+
+
 function wpclpl_custom_login_logo() {
 
 	global $wpclpl_plugin_options;
@@ -443,7 +448,16 @@ function wpclpl_custom_login_logo() {
     
     <?php
     // do we have addition text? -------------------------------------
-    if(!empty($wpclpl_additional_text)) { ?>
+    if(!empty($wpclpl_additional_text)) {
+
+	// we need jquery here... 
+	if(wp_script_is('jquery')) {
+	   // zzzz...
+	} else {
+	   add_action( 'login_enqueue_scripts', 'custom_login_enqueue_scripts' );
+	}
+
+ ?>
     
     <script>
     jQuery(function($){
