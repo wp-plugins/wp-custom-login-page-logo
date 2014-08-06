@@ -459,17 +459,7 @@ function wpclpl_custom_login_logo() {
     </style>
     
     <?php
-    // do we have addition text? -------------------------------------
-    if(!empty($wpclpl_additional_text)) { ?>
-    
-    <script>
-    jQuery(function($){
-    	var wpclpl_additional_text = '<?php echo $wpclpl_additional_text; ?>';
-    	$('<p style="text-align:center">'+wpclpl_additional_text+'</p>').insertAfter("#login h1");
-    });	    
-    </script>
-    
-    <?php } // eof if( !empty($wpclpl_additional_text) )
+
 	} else {
 		$wpclpl_plugin_logo_url = '';
 	} // eof	if( !empty( $wpclpl_plugin_options['wpclpl_logo_url'] ) ) 
@@ -477,6 +467,28 @@ function wpclpl_custom_login_logo() {
 }
 add_action('login_head', 'wpclpl_custom_login_logo');
 
+
+
+/*
+* add the footer javascript...
+****************************************
+*/ 
+function wpclpl_footer_js(){
+	global $wpclpl_plugin_options;
+
+	// js doesn't like line breaks in strings...
+	$wpclpl_additional_text = str_ireplace(array("\r","\n",'\r','\n'),'', $wpclpl_plugin_options['wpclpl_additional_text']);
+?>
+ <script>
+    jQuery(function($){
+    	var wpclpl_additional_text = '<?php echo $wpclpl_additional_text; ?>';
+    	$('<p style="text-align:center">'+wpclpl_additional_text+'</p>').insertAfter("#login h1");
+    });	    
+    </script>
+
+<?php
+}
+add_action('login_footer', 'wpclpl_footer_js');
 
 
 
