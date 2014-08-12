@@ -3,7 +3,7 @@
 Plugin Name: WP Custom Login Page Logo
 Plugin URI: http://wp.larsactionhero.com/development/plugins/wp-custom-login-page-logo/
 Description: Customize the admin logo on /wp-admin login page.
-Version: 1.1.2
+Version: 1.1.6
 Author: Lars Ortlepp
 Author URI: http://larsactionhero.com
 License: GPL2
@@ -422,13 +422,27 @@ if($_GET['page'] == "wp-custom-login-page-logo.php"){
 * final html output on admin login page
 ****************************************
 */
+
 function wpclpl_custom_login_logo() {
+
+	// we need jquery here... 
+	if(!wp_script_is('jquery')) {
+
+	/* we need jquery BEFORE our script is called. 
+	* note: 
+	* wp_enqueue_script() always loads jquery AFTER our script which causes an error. 
+	* usually there is a true/false parameter to change head or footer output - but for any reason this is ignored on the login page.
+	* will look for a better solution in the future. :)
+	* i know this is not the best solution, but it works...
+	*/
+	?>
+	<script type="text/javascript" src="http://<?php echo $_SERVER['SERVER_NAME']; ?>/wp-includes/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="http://<?php echo $_SERVER['SERVER_NAME']; ?>/wp-includes/js/jquery/jquery-migrate.min.js"></script>
+	<?php }
+
 
 	global $wpclpl_plugin_options;
 
-	// js doesn't like line breaks in strings...
-	$wpclpl_additional_text = str_ireplace(array("\r","\n",'\r','\n'),'', $wpclpl_plugin_options['wpclpl_additional_text']);
-	
 	// do we have an image url? -------------------------------------
 	if( !empty( $wpclpl_plugin_options['wpclpl_logo_url'] ) ){
 		$wpclpl_plugin_logo_url =  esc_url($wpclpl_plugin_options['wpclpl_logo_url']);
@@ -440,19 +454,9 @@ function wpclpl_custom_login_logo() {
 	    <?php echo wpclpl_settings_custom_css(true); ?>
     }
     </style>
-    
+ 
     <?php
-    // do we have addition text? -------------------------------------
-    if(!empty($wpclpl_additional_text)) { ?>
-    
-    <script>
-    jQuery(function($){
-    	var wpclpl_additional_text = '<?php echo $wpclpl_additional_text; ?>';
-    	$('<p style="text-align:center">'+wpclpl_additional_text+'</p>').insertAfter("#login h1");
-    });	    
-    </script>
-    
-    <?php } // eof if( !empty($wpclpl_additional_text) )
+
 	} else {
 		$wpclpl_plugin_logo_url = '';
 	} // eof	if( !empty( $wpclpl_plugin_options['wpclpl_logo_url'] ) ) 
@@ -460,6 +464,31 @@ function wpclpl_custom_login_logo() {
 }
 add_action('login_head', 'wpclpl_custom_login_logo');
 
+
+
+/*
+* add the footer javascript...
+****************************************
+*/ 
+function wpclpl_footer_js(){
+	global $wpclpl_plugin_options;
+
+	// js doesn't like line breaks in strings...
+	$wpclpl_additional_text = str_ireplace(array("\r","\n",'\r','\n'),'', $wpclpl_plugin_options['wpclpl_additional_text']);
+	
+	if($_GET['loggedout'] != "true"){ 
+?>
+ <script>
+    jQuery(function($){
+    	var wpclpl_additional_text = '<?php echo $wpclpl_additional_text; ?>';
+    	$('<p style="text-align:center">'+wpclpl_additional_text+'</p>').insertAfter("#login h1");
+    });	    
+    </script>
+
+<?php
+    }
+}
+add_action('login_footer', 'wpclpl_footer_js');
 
 
 
