@@ -53,18 +53,6 @@ jQuery(document).ready(function($){
 	
 	buildPreviewCss();
 	
-	/*
-	// css preview button
-	$('.wpclpl-logo-preview-css-btn').click(function(){
-		var cssPreview = 'background-image:url("'+$('.wpclpl-logo-url').val()+'");';
-		cssPreview += "\n";
-		cssPreview += $('.wpclpl-custom-css').val();
-		$('#wpclpl-preview-css')
-			.html( cssPreview )
-			.slideToggle();
-	});
-	
-	*/
 	
 	// only little bit of example css...
 	/*
@@ -80,23 +68,30 @@ jQuery(document).ready(function($){
 	*/
 	
 	// remove image and load default
-	$('.wpclpl-logo-remove-img-btn').click(function(){
+	/*$('.wpclpl-logo-remove-img-btn').click(function(){
 		$('.wpclpl-logo-url').val('');
 		$('.wpclpl-options-form').submit();		
-	});
+	});*/
 	
 	
-	// complete reset to default
-	$('.wpclpl-reset-btn').click(function(){
-				
+	// modal window
+	function wpclplShowModal(ID){
+		
 		$('<div class="wpclpl-modal-box-wrap"></div>').insertBefore('#wpwrap');
-		$('.wpclpl-modal-box').fadeIn(300,function(){
+				console.log(ID);
+		$('.'+ID).fadeIn(300,function(){
 		
 			// yes, reset...
 			$('.wpclpl-reset-confirmed').click(function(){
 				$('.wpclpl-logo-url, .wpclpl-custom-css, .wpclpl-additional-text').val('');
 				$('.wpclpl-modal-box').fadeOut(300,function(){
-					// note the jQuery bug: .submit() won't work if the submit button	has a "name" tag, 
+					
+					// note the jQuery bug: .submit() won't work if the submit button as a "name" tag, 
+					
+					if(ID=='wpclpl-modal-box-reset-image'){
+						$('.wpclpl-logo-url').val('');
+					}
+					
 					$('.wpclpl-options-form').submit();	
 				});
 			});
@@ -104,10 +99,18 @@ jQuery(document).ready(function($){
 			// no, cancel
 			$('.wpclpl-reset-cancel').click(function(){	
 				$('.wpclpl-modal-box').fadeOut(300);
+				$('.wpclpl-modal-box-wrap').fadeOut(300);
 			});		
 			
 		});
-			
+		
+	}
+	
+	// click on reset buttons: reset image / reset all settings
+	$('.wpclpl-reset-btn').click(function(e){
+		e.preventDefault();
+		wpclplShowModal( $(this).attr('id') );
+		
 	});
 
 

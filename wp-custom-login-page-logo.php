@@ -3,7 +3,7 @@
 Plugin Name: WP Custom Login Page Logo
 Plugin URI: http://wp.larsactionhero.com/development/plugins/wp-custom-login-page-logo/
 Description: Customize the admin logo on /wp-admin login page.
-Version: 1.2.3
+Version: 1.2.4
 Author: Lars Ortlepp
 Author URI: http://larsactionhero.com
 License: GPL2
@@ -14,13 +14,56 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 /*
-* update options!
-****************************************
+* Init: load textdomain & plugin settings links
+***************************************
 */
-if($_POST['wpclpl_save']==1){
-	wpclpl_update_options();
+function wpclpl_init(){
+	
+	load_plugin_textdomain( 'wpclpl', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wpclpl_plugin_links', 10, 2 );
+	
 }
 
+
+/*
+* load language files
+****************************************	
+*/
+function wpclpl_load_textdomain(){
+	load_plugin_textdomain( 'wpclpl', FALSE, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}
+
+
+/*
+* plugin links
+****************************************	
+*/
+function wpclpl_plugin_links( $links ){
+
+	// settings urlsm, etc
+	$wpclpl_settings_url = admin_url('options-general.php?page=wp-custom-login-page-logo.php');
+	$wpclpl_docs_url = 'http://wp.larsactionhero.com/development/plugins/wp-custom-login-page-logo/';
+
+	$wpclpl_plugin_links = array(
+		'<a href="'.$wpclpl_settings_url.'">' . __( 'Settings', 'wpclpl' ) . '</a>',
+	    /*'<a href="'.$wpclpl_docs_url.'" target="_blank">' . __( 'Documentation', 'wpclpl' ) . '</a>'*/
+	);
+        
+	return array_merge( $wpclpl_plugin_links, $links );    
+
+}
+
+
+add_action( 'admin_init', 'wpclpl_init' );
+
+
+/*
+* update options
+****************************************
+*/
+if($_POST['wpclpl_save']=='1'){
+	wpclpl_update_options();
+}
 
 /*
 * add options page
@@ -83,11 +126,12 @@ function wpclpl_settings_logo() {
 	$wpclpl_plugin_logo_url =  ( !empty( $wpclpl_plugin_options['wpclpl_logo_url'] ) ) ? esc_url($wpclpl_plugin_options['wpclpl_logo_url']) : '';
 	?>
      <p>
-        <input type="text" class="wpclpl-logo-url" name="wpclpl_logo_url" value="<?php echo $wpclpl_plugin_logo_url; ?>" placeholder="<?php _e('Insert URL here or select image with button below.','wpclpl'); ?>" /><br />
-        <span class="wpclpl-description"><?php _e('Insert image url here','wpclpl'); ?> <code>(e.g. http://www.mywebsite.com/wp-content/themes/mytheme/images/mylogo.jpg)</code>
-	        <br /><?php _e('Or select an image with button below.','wpclpl'); ?></span>
-        <input class="wpclpl-logo-upload-btn button" type="button" value="<?php esc_attr_e('Select an image file','wpclpl'); ?>" />  
-        <span class="wpclpl-description"><?php _e('Select an existing image from the media library or upload a new one.','wpclpl');?></span>
+     	<input class="wpclpl-logo-upload-btn button" type="button" value="<?php esc_attr_e('Select an image file','wpclpl'); ?>" /> 
+     	<span class="wpclpl-description">
+     		<?php _e('Select an existing image from the media library or upload a new one.','wpclpl');?><br />
+	 		<?php _e('You also can insert an image url manually:','wpclpl'); ?><br />
+        <input type="text" class="wpclpl-logo-url" name="wpclpl_logo_url" value="<?php echo $wpclpl_plugin_logo_url; ?>" placeholder="<?php _e('Insert URL here or select image with button below.','wpclpl'); ?>" />     
+        <code>(<?php _e('e.g.','wpclpl'); ?> http://www.mywebsite.com/wp-content/themes/mytheme/images/mylogo.jpg)</code></span>
      </p>
      <?php
 }  
@@ -115,7 +159,7 @@ function wpclpl_settings_logo_preview() {
 	if( !empty( $wpclpl_plugin_options['wpclpl_logo_url'] ) ){
 	
 	?>
-		<div class="wpclpl-logo-preview-wrap" style="min-height: 100px;">  
+		<div class="wpclpl-logo-preview-wrap">  
 			<a href="<?php echo esc_url( $wpclpl_plugin_options['wpclpl_logo_url'] );?>?TB_inline=true&height=400&width=400&inlineId=wpclpl-logo-preview"  class="thickbox">
 				<img style="max-width:100%;" class="wpclpl-logo-preview" src="<?php echo esc_url( $wpclpl_plugin_options['wpclpl_logo_url'] ); ?>" id="wpclpl-logo-preview" /></a>
 		</div>
@@ -125,7 +169,7 @@ function wpclpl_settings_logo_preview() {
 		 ?>
 		</p>
 		<p>
-			<input class="wpclpl-logo-remove-img-btn button" type="button" value="<?php esc_attr_e('Remove Image','wpclpl'); ?>" />
+			<input class="wpclpl-logo-remove-img-btn wpclpl-reset-btn button" id="wpclpl-modal-box-reset-image" type="button" value="<?php esc_attr_e('Remove Image','wpclpl'); ?>" />
 			<span class="wpclpl-description">(<?php _e('File in Media Library will not be deleted','wpclpl'); ?>)</span>
 		</p>
 		<?php
@@ -141,6 +185,20 @@ function wpclpl_settings_logo_preview() {
 }  
 
 
+
+/*
+* we check if file is located on our server or external
+****************************************
+*/
+function wpclpl_file_is_local(){
+	
+	global $wpclpl_plugin_options;
+	return ( stristr( esc_url($wpclpl_plugin_options['wpclpl_logo_url']), $_SERVER['SERVER_NAME'] )===false ) ? false : true;
+	
+}
+
+
+
 /*
 * returns image dimensions
 ****************************************
@@ -151,25 +209,42 @@ function wpclpl_image_dimensions( $return=false ){
 	
 	if( !empty( $wpclpl_plugin_options['wpclpl_logo_url'] ) ){
 				
-		$wpclpl_logo_url = esc_url($wpclpl_plugin_options['wpclpl_logo_url']);
+		
+		// file location
+		if( wpclpl_file_is_local() === true ){
+				
+			$wpclpl_logo_url = esc_url($wpclpl_plugin_options['wpclpl_logo_url']);
+		
+			$wpclpl_logo_url = str_replace('http://', '', $wpclpl_logo_url);	
+			$wpclpl_logo_url = str_replace('https://','', $wpclpl_logo_url);	
+			$wpclpl_logo_url = str_replace($_SERVER['SERVER_NAME'],'', $wpclpl_logo_url);
+			$wpclpl_logo_url = str_replace('www.','', $wpclpl_logo_url);
+			$wpclpl_logo_url = '..'.$wpclpl_logo_url;
 	
-		$wpclpl_logo_url = str_replace('http://', '', $wpclpl_logo_url);	
-		$wpclpl_logo_url = str_replace('https://','', $wpclpl_logo_url);	
-		$wpclpl_logo_url = str_replace($_SERVER['SERVER_NAME'],'', $wpclpl_logo_url);
-		$wpclpl_logo_url = str_replace('www.','', $wpclpl_logo_url);
-		$wpclpl_logo_url = '..'.$wpclpl_logo_url;
-
-		$wpclpl_logo_dimensions = getimagesize( $wpclpl_logo_url );
-		
-		$wpclpl_logo_width = $wpclpl_logo_dimensions[0];
-		$wpclpl_logo_height = $wpclpl_logo_dimensions[1];
-		
-		if( !$return ){
-		?>
-		<span class="wpclpl-description"><?php _e('Original size','wpclpl'); ?>: <span id="wpclpl-logo-width"><?php echo $wpclpl_logo_width; ?></span> x <span id="wpclpl-logo-height"><?php echo $wpclpl_logo_height; ?></span>px</span>
-		<?php
+			$wpclpl_logo_dimensions = getimagesize( $wpclpl_logo_url );
+			
+			$wpclpl_logo_width = $wpclpl_logo_dimensions[0];
+			$wpclpl_logo_height = $wpclpl_logo_dimensions[1];
+			
+			if( !$return ){
+			?>
+			<span class="wpclpl-description"><?php _e('Original size','wpclpl'); ?>: <span id="wpclpl-logo-width"><?php echo $wpclpl_logo_width; ?></span> x <span id="wpclpl-logo-height"><?php echo $wpclpl_logo_height; ?></span>px</span>
+			<?php
+			} else {
+				return array($wpclpl_logo_width,$wpclpl_logo_height);
+			}
+			
 		} else {
-		return array($wpclpl_logo_width,$wpclpl_logo_height);
+			
+			// external file: can't read image dimensions.
+			if( !$return ){
+			?>
+			<span class="wpclpl-description"><?php _e("Note: The Plugin can not read dimensions of external files. Please add them to your stylesheet manually.",'wpclpl'); ?></span>
+			<?php
+			} else { 
+				return '';
+			}
+			
 		}
 		
 		/*		
@@ -264,7 +339,7 @@ function wpclpl_settings_custom_css($return = false){
 				exampleCss += 'background-repeat: no-repeat;'+"\n";
 				exampleCss += 'background-color: #fff;'+"\n";
 				
-				<?php if(!empty($wpclpl_logo_url)) { ?>
+				<?php if(!empty($wpclpl_logo_url) && (!empty($image_dimensions))) { ?>
 				exampleCss += 'width: <?php echo $image_dimensions[0].'px; /* '; _e('matched to image dimensions','wpclpl'); echo ' */'; ?>'+"\n";
 				exampleCss += 'height: <?php echo $image_dimensions[1].'px; /* '; _e('matched to image dimensions','wpclpl'); echo ' */'; ?>'+"\n";
 				<?php } ?>
@@ -289,7 +364,7 @@ function wpclpl_settings_custom_css($return = false){
 		<?php _e('There\'s nothing to see at the beginning because the login page logo is styled by default.','wpclpl') ?>
 		<br /><?php _e('You also may load an example css to start and customize it.','wpclpl'); ?></strong>
 		
-		<p><input class="wpclpl-logo-example-css-btn button" type="button" value="Load example CSS" /> </p>
+		<p><input class="wpclpl-logo-example-css-btn button" type="button" value="<?php _e('Load example CSS','wpclpl'); ?>" /> </p>
 
 		<p class="wpclpl-notice">
 			<strong><?php _e('Note:  There\'s no need to insert an','wpclpl'); ?> </strong><code><?php _e('background-image','wpclpl'); ?></code> <strong><?php _e('value here, it will be added by default to the final output.','wpclpl'); ?><br />
@@ -353,15 +428,30 @@ function wpclpl_admin_options_page(){ ?>
 		 } // eof if($_POST["wpclpl_save"]==1) 
 		 ?>
 
-			<div class="wpclpl-modal-box">
-				<div>
-					<h4>Confirm reset</h4>
-					<p><?php _e('This will reset all your settings, including the custom image, additonal text and any entered custom css.'); ?>
-					<br />
-					<?php _e('Are you sure you want to continue?'); ?></p>
-					<p><input type="button" class="wpclpl-reset-cancel button-secondary" value="<?php _e('No, keep settings', 'wpclpl'); ?>" /> <input type="button" class="wpclpl-reset-confirmed button-primary" value="<?php _e('Reset all settings', 'wpclpl'); ?>" /></p>
-				</div>			
-			</div>
+		<?php // modal windows: reset image only ?>
+		<div class="wpclpl-modal-box wpclpl-modal-box-reset-image">
+			<div>
+				<h4><?php _e('Confirm reset','wpclpl'); ?></h4>
+				<p><?php _e('This will remove the custom image.<br />(File will be kept in the library).','wpclpl'); ?>
+				<br />
+				<?php _e('Are you sure you want to continue?','wpclpl'); ?></p>
+				<p><input type="button" class="wpclpl-reset-cancel button-secondary" value="<?php _e('No, keep settings', 'wpclpl'); ?>" /> <input type="button" class="wpclpl-reset-confirmed button-primary" value="<?php _e('Reset all settings', 'wpclpl'); ?>" /></p>
+			</div>			
+		</div>
+			
+			
+		<?php // modal windows: reset all settings ?>
+		<div class="wpclpl-modal-box wpclpl-modal-box-reset-all">
+			<div>
+				<h4><?php _e('Confirm reset','wpclpl'); ?></h4>
+				<p><?php _e('This will reset all your settings, including the custom image, additonal text and any entered styles.', 'wpclpl'); ?>
+				<br />
+				<?php _e('Are you sure you want to continue?','wpclpl'); ?></p>
+				<p><input type="button" class="wpclpl-reset-cancel button-secondary" value="<?php _e('No, keep settings', 'wpclpl'); ?>" /> <input type="button" class="wpclpl-reset-confirmed button-primary" value="<?php _e('Reset all settings', 'wpclpl'); ?>" /></p>
+			</div>			
+		</div>	
+			
+			
     	<div class="wrap">
 			<div id="icon-themes" class="icon32"><br /></div>
 			<h2><?php _e( 'Custom Login Page Logo', 'wpclpl' ); ?></h2>
@@ -376,7 +466,7 @@ function wpclpl_admin_options_page(){ ?>
 			?>
 			  <p class="submit">
 			    	<input id="submit_options_form" type="submit" class="button-primary" value="<?php esc_attr_e('Save Settings', 'wpclpl'); ?>" />
-					<input name="reset" type="button" class="wpclpl-reset-btn  button-secondary" value="<?php _e('Reset to default', 'wpclpl'); ?>" />	
+					<input name="reset" type="button" class="wpclpl-reset-btn wpclpl-reset-to-default button-secondary" id="wpclpl-modal-box-reset-all" value="<?php _e('Reset to default', 'wpclpl'); ?>" />	
 					<input type="hidden" name="wpclpl_save" value="1" />	
 			    </p>     
 			</form>
