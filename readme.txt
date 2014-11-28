@@ -3,8 +3,8 @@ Contributors: Lars Ortlepp
 Donate link: http://wp.larsactionhero.com/development/plugins/wp-custom-login-page-logo/
 Tags: custom admin logo, admin logo, change admin logo, change login logo, admin login logo, custom login page, add client logo to login page, plugin, wp-admin, login logo
 Requires at least: 3.3
-Tested up to: 4.0
-Stable tag: 1.2.2
+Tested up to: 4.0.1
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,12 @@ Currently, there's nothing to answer...
 
 == Changelog ==
 
+= 1.2.4 = 
+* Added language support, structural changes
+
+= 1.2.3 = 
+* Fixed an js error while loading example css styles
+
 = 1.2.2 = 
 * Minor changes
 
@@ -46,7 +52,7 @@ Currently, there's nothing to answer...
 * Minor changes
 
 = 1.2.0 =
-* Fixed getfilesize() error on pages with https:// connection
+* Fixed getfilesize() error
 
 = 1.1.9 =
 * Minor changes
