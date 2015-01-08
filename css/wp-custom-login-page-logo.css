@@ -65,7 +65,6 @@ textarea {
 }
 
 .wpclpl-currentlogo {
-	background-image: none, url('/wp-admin/images/wordpress-logo.svg?ver=20131107');
 	background-size: 78px 80px;
 	background-position: center top;
 	background-repeat: no-repeat;
