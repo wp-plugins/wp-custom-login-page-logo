@@ -3,7 +3,7 @@
 Plugin Name: WP Custom Login Page Logo
 Plugin URI: http://wp.larsactionhero.com/development/plugins/wp-custom-login-page-logo/
 Description: Customize the admin logo on /wp-admin login page.
-Version: 1.2.5
+Version: 1.2.7
 Author: Lars Ortlepp
 Author URI: http://larsactionhero.com
 License: GPL2
@@ -61,9 +61,10 @@ add_action( 'admin_init', 'wpclpl_init' );
 * update options
 ****************************************
 */
+/*
 if($_POST['wpclpl_save']=='1'){
 	wpclpl_update_options();
-}
+}*/
 
 /*
 * add options page
@@ -219,10 +220,9 @@ function wpclpl_image_dimensions( $return=false ){
 			$wpclpl_logo_url = str_replace('https://','', $wpclpl_logo_url);	
 			$wpclpl_logo_url = str_replace($_SERVER['SERVER_NAME'],'', $wpclpl_logo_url);
 			$wpclpl_logo_url = str_replace('www.','', $wpclpl_logo_url);
-			$wpclpl_logo_url = '..'.$wpclpl_logo_url;
 	
-			$wpclpl_logo_dimensions = getimagesize( $wpclpl_logo_url );
-			
+			$wpclpl_logo_dimensions = getimagesize( $_SERVER['DOCUMENT_ROOT'].$wpclpl_logo_url );
+						
 			$wpclpl_logo_width = $wpclpl_logo_dimensions[0];
 			$wpclpl_logo_height = $wpclpl_logo_dimensions[1];
 			
@@ -412,15 +412,16 @@ function wpclpl_admin_options_page(){ ?>
 
 		<?php 
 		// update options, if successful, show message
-		 if($_POST["wpclpl_save"]==1){
+		 if($_POST["wpclpl_save"]==1){ 			 
 		 
 			 if( wpclpl_update_options() ){
+				
 			 ?>
-				<script> jQuery(function($){ $('.settings-save-ok').fadeIn(500).delay(3000).slideUp(500); }); </script>
+				<script> jQuery(function($){ $('.wpclpl-settings-save-ok').fadeIn(500).delay(3000).slideUp(500); }); </script>
 			 <?php
 			 } else {
 			  ?>
-				<script> jQuery(function($){ $('.settings-save-error').fadeIn(500).delay(3000).slideUp(500); }); </script>
+				<script> jQuery(function($){ $('.wpclpl-settings-save-error').fadeIn(500).delay(3000).slideUp(500); }); </script>
 			 <?php
 			 
 			 } // eof  if( wpclpl_update_options() )
@@ -490,8 +491,8 @@ function wpclpl_update_options(){
 		'wpclpl_custom_css' => wpclpl_filter_vars( $_POST['wpclpl_custom_css'] ) 
 	);
 	
-	// ...and store' em
-	return ( update_option('wpclpl_plugin_options', $wpclpl_plugin_options_arr ) )  ? 1 : 0;
+	// ...and store' em	
+	return ( (update_option('wpclpl_plugin_options', $wpclpl_plugin_options_arr )===TRUE) )  ? 1 : 0;
 	  
 }
       
