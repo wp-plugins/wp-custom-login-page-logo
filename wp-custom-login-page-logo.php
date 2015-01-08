@@ -3,7 +3,7 @@
 Plugin Name: WP Custom Login Page Logo
 Plugin URI: http://wp.larsactionhero.com/development/plugins/wp-custom-login-page-logo/
 Description: Customize the admin logo on /wp-admin login page.
-Version: 1.2.7
+Version: 1.2.8
 Author: Lars Ortlepp
 Author URI: http://larsactionhero.com
 License: GPL2
@@ -61,10 +61,10 @@ add_action( 'admin_init', 'wpclpl_init' );
 * update options
 ****************************************
 */
-/*
+
 if($_POST['wpclpl_save']=='1'){
 	wpclpl_update_options();
-}*/
+}
 
 /*
 * add options page
@@ -82,7 +82,11 @@ add_action('admin_menu','register_wpclpl_plugin_option_page');
 ****************************************
 */
 function wpclpl_filter_vars( $input ){
-	return filter_var( $input, FILTER_SANITIZE_STRING );
+	if($input) {
+		return filter_var( $input, FILTER_SANITIZE_STRING );
+	} else {
+		return '';
+	}
 }
 
 
@@ -176,10 +180,11 @@ function wpclpl_settings_logo_preview() {
 		<?php
 		
 	} else {
+		
 		?>
-		<div class="wpclpl-currentlogo"></div>
+		<div class="wpclpl-currentlogo" style="background-image: url('<?php echo admin_url(); ?>images/wordpress-logo.svg?ver=20131107')"></div>
 		<br clear="left" />
-		<p class="wpclpl-default-logo">(<?php _e('Default WP Logo','wpclpl'); ?>)</p>
+		<p class="wpclpl-default-logo" style="">(<?php _e('Default WP Logo','wpclpl'); ?>)</p>
 		<?php
 	}
 
@@ -222,7 +227,7 @@ function wpclpl_image_dimensions( $return=false ){
 			$wpclpl_logo_url = str_replace('www.','', $wpclpl_logo_url);
 	
 			$wpclpl_logo_dimensions = getimagesize( $_SERVER['DOCUMENT_ROOT'].$wpclpl_logo_url );
-						
+			
 			$wpclpl_logo_width = $wpclpl_logo_dimensions[0];
 			$wpclpl_logo_height = $wpclpl_logo_dimensions[1];
 			
@@ -412,22 +417,12 @@ function wpclpl_admin_options_page(){ ?>
 
 		<?php 
 		// update options, if successful, show message
-		 if($_POST["wpclpl_save"]==1){ 			 
-		 
-			 if( wpclpl_update_options() ){
-				
-			 ?>
-				<script> jQuery(function($){ $('.wpclpl-settings-save-ok').fadeIn(500).delay(3000).slideUp(500); }); </script>
-			 <?php
-			 } else {
-			  ?>
-				<script> jQuery(function($){ $('.wpclpl-settings-save-error').fadeIn(500).delay(3000).slideUp(500); }); </script>
-			 <?php
-			 
-			 } // eof  if( wpclpl_update_options() )
-
-		 } // eof if($_POST["wpclpl_save"]==1) 
-		 ?>
+		if($_POST["wpclpl_save"]==1){ 		
+		?>
+			<script> jQuery(function($){ $('.wpclpl-settings-save-ok').fadeIn(500).delay(3000).slideUp(500); }); </script>
+		<?php
+		} // eof if($_POST["wpclpl_save"]==1) 
+		?>
 
 		<?php // modal windows: reset image only ?>
 		<div class="wpclpl-modal-box wpclpl-modal-box-reset-image">
@@ -492,7 +487,7 @@ function wpclpl_update_options(){
 	);
 	
 	// ...and store' em	
-	return ( (update_option('wpclpl_plugin_options', $wpclpl_plugin_options_arr )===TRUE) )  ? 1 : 0;
+	return ( (update_option('wpclpl_plugin_options', $wpclpl_plugin_options_arr )===TRUE) ) ? 1 : 0;
 	  
 }
       

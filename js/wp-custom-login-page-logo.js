@@ -27,15 +27,20 @@ jQuery(document).ready(function($){
 		$('.wpclpl-currentlogo, .wpclpl-default-logo').fadeOut(300);		
 		$('<img class="wpclpl-logo-preview" style="display:none; "src="'+uploadedLogoUrl+'" />  ')
 			.insertAfter('.wpclpl-currentlogo')
-			.delay(300)
+			.delay(500)
 			.fadeIn(300);
 			
 		$('#wpclpl-logo-preview').attr('src', $('.wpclpl-logo-url').val() );
 		$('#wpclpl-logo-preview-wrap a.thickbox').attr('href', $('.wpclpl-logo-url').val() );
 		
+		
 		updateCustomCss();
 		
-		$('.wpclpl-options-form').delay(600).submit();
+		setTimeout(function(){
+			$('.wpclpl-options-form').submit();
+		},500);
+		
+		
 		
 	}
 	
@@ -92,7 +97,9 @@ jQuery(document).ready(function($){
 						$('.wpclpl-logo-url').val('');
 					}
 					
-					$('.wpclpl-options-form').submit();	
+					setTimeout(function(){
+						$('.wpclpl-options-form').submit();	
+					},1000); 
 				});
 			});
 			

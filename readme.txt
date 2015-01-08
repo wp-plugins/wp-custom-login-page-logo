@@ -4,7 +4,7 @@ Donate link: http://wp.larsactionhero.com/development/plugins/wp-custom-login-pa
 Tags: custom admin logo, admin logo, change admin logo, change login logo, admin login logo, custom login page, add client logo to login page, plugin, wp-admin, login logo
 Requires at least: 3.3
 Tested up to: 4.1
-Stable tag: 1.2.7
+Stable tag: 1.2.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,9 @@ Currently, there's nothing to answer...
 2. Customized admin page example
 
 == Changelog ==
+
+= 1.2.8 = 
+* Minor changes
 
 = 1.2.7 = 
 * Tested and optimized for WP 4.1
